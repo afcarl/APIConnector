@@ -32,8 +32,6 @@ suppressMessages(library (zoo))        # Time series utilities
 
 # -- Optional features/adjustments ---------------------------------------------------- #
 
-setwd("~/Documents/mexBT/BTCMarketsReport/APIConnector")
-
 options("scipen"=1000,"getSymbols.warning4.0"=FALSE,concordance=TRUE)
 Sys.setlocale(category = "LC_ALL", locale = "")
 
