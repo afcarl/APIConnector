@@ -10,10 +10,10 @@
 OYFxPairD1 <- function(FxPair,APISource,InitialDate,FinaDate)
 {
 FxData <- data.frame(get(getSymbols(FxPair,src=APISource,from=InitialDate,to=FinaDate)))
-FxData <- data.frame(as.Date(row.names(FxData)), FxData[,2:4], FxData[,6])
+FxData <- data.frame(as.Date(row.names(FxData)), FxData[,])
 row.names(FxData) <- NULL
 FxData <- FxData [-1,]
-colnames(FxData) <- c("TimeStamp","Open","High","Low","Close")
+colnames(FxData) <- c("TimeStamp","Price")
 return(FxData)
 }
 
