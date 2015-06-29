@@ -3,40 +3,6 @@
 # -- License: PRIVATE and Right Reserved ----------------------------------------------- #
 # -- ----------------------------------------------------------------------------------- #
 
-# -- Check for presence of individual R packages --------------------------------------- #
-
-if (!require(base)) install.packages('base', quiet = TRUE)
-suppressMessages(library (base))       # basic functions
-if (!require(httr)) install.packages('httr', quiet = TRUE)
-suppressMessages(library (httr))       # meXBTMktsleer url's
-if (!require(jsonlite)) install.packages('jsonlite', quiet = TRUE)
-suppressMessages(library (jsonlite))   # JSON parser
-if (!require(lubridate)) install.packages('lubridate', quiet = TRUE)
-suppressMessages(library (lubridate))  # treatment and modification for dates
-if (!require(plyr)) install.packages('plyr', quiet = TRUE)
-suppressMessages(library (plyr))       # General data treatment
-if (!require(quantmod)) install.packages('quantmod', quiet = TRUE)
-suppressMessages(library (quantmod))   # Stock Prices and Dividends from YAHOO
-if (!require(reshape2)) install.packages('reshape2', quiet = TRUE)
-suppressMessages(library (reshape2))   # Use the function MELT
-if (!require(RCurl)) install.packages('RCurl', quiet = TRUE)
-suppressMessages(library (RCurl))      # leer url's
-if (!require(simsalapar)) install.packages('simsalapar', quiet = TRUE)
-suppressMessages(library (simsalapar))  # Special Error Handler "TryCatch()"
-if (!require(tseries)) install.packages('tseries', quiet = TRUE)
-suppressMessages(library (tseries))    # Time series utilities
-if (!require(xts)) install.packages('xts', quiet = TRUE)
-suppressMessages(library (xts))        # Time series utilities
-if (!require(zoo)) install.packages('zoo', quiet = TRUE)
-suppressMessages(library (zoo))        # Time series utilities
-
-# -- Optional features/adjustments ---------------------------------------------------- #
-
-setwd("~/Documents/mexBT/BTCMarketsReport/APIConnector")
-
-options("scipen"=1000,"getSymbols.warning4.0"=FALSE,concordance=TRUE)
-Sys.setlocale(category = "LC_ALL", locale = "")
-
 # -- ---------------------------------------------------------------------------------- #
 # -- Quantmod - Yahoo FX and Stocks --------------------------------------------------- #
 # -- ---------------------------------------------------------------------------------- #
