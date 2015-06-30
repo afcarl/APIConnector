@@ -1,11 +1,11 @@
-# -- ----------------------------------------------------------------------------------- #
-# -- meXBT API CONNECTOR --------------------------------------------------------------- #
-# -- License: PRIVATE and Right Reserved ----------------------------------------------- #
-# -- ----------------------------------------------------------------------------------- #
+# -- --------------------------------------------------------------------------------------------- #
+# -- meXBT API CONNECTOR ------------------------------------------------------------------------- #
+# -- License: PRIVATE and Right Reserved --------------------------------------------------------- #
+# -- --------------------------------------------------------------------------------------------- #
 
-# -- ---------------------------------------------------------------------------------- #
-# -- OANDA REST API, Indices, Commodities, Bonds Yields ------------------------------- #
-# -- ---------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+# -- OANDA REST API, Indices, Commodities, Bonds Yields ----------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
 
 EconomicCalendar <- function(Instrument,Period)
 {
@@ -71,9 +71,9 @@ HisPrices  <- function(Granularity,Instrument,Count)
   return(Prices)
 }
 
-# -- ---------------------------------------------------------------------------------- #
-# -- Quantmod - Yahoo FX and Stocks --------------------------------------------------- #
-# -- ---------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+# -- Quantmod - Yahoo FX and Stocks ------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
 
 OYFxPairD1 <- function(FxPair,APISource,InitialDate,FinaDate)
 {
@@ -94,11 +94,11 @@ colnames(StockData1) <- c("TimeStamp","Open","High","Low","Close","Volumen","Adj
 return(StockData1)
 }
 
-# -- ---------------------------------------------------------------------------------- #
-# -- meXBT DATA API ------------------------------------------------------------------- #
-# -- ---------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+# -- meXBT DATA API ----------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
 
-# -- Get Tick Historical Prices ------------------------------------------------------- #
+# -- Get Tick Historical Prices ----------------------------------------------------------------- #
 
 meXBTHistoricPrices <- function(BtcPair,TimeZonePar,InfoSince)
 {
@@ -117,7 +117,7 @@ colnames(BtcUsd) <- c("TickerID","TimeStamp","Price","Amount")
 return(BtcUsd)
 }
 
-# -- Get Present Ticker --------------------------------------------------------------- #
+# -- Get Present Ticker ------------------------------------------------------------------------- #
 
 meXBTTicker <- function(BtcPair)
 {
@@ -131,7 +131,7 @@ colnames(TickermeXBT) <- c("Date","Value","Bid","Ask","AskCount","BidCount")
 return(TickermeXBT)
 }
 
-# -- Get Present Order Book ----------------------------------------------------------- #
+# -- Get Present Order Book --------------------------------------------------------------------- #
 
 meXBTOrderBook <- function(BtcPair)
 {
@@ -154,11 +154,11 @@ colnames(meXBTBtcUsdOB) <- c("TimeStamp","Price","Amount","Side")
 return(meXBTBtcUsdOB)
 }
 
-# -- ---------------------------------------------------------------------------------- #
-# -- Bitex.la DATA API ---------------------------------------------------------------- #
-# -- ---------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+# -- Bitex.la DATA API -------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
 
-# -- Present OrderBook Bitex.la DATA API ---------------------------------------------- #
+# -- Present OrderBook Bitex.la DATA API -------------------------------------------------------- #
 
 BitexlaOrderBook  <- function(TimeStamp)
 {
@@ -177,7 +177,7 @@ BitexlaOB <- data.frame(TimeStamp,BitexlaOB[,])
 return(BitexlaOB)
 }
 
-# -- Historical Transactions Bitex.la DATA API ---------------------------------------- #
+# -- Historical Transactions Bitex.la DATA API -------------------------------------------------- #
 
 BitexlaTrades <- function(TimeStamp)
 {
@@ -190,7 +190,7 @@ BitexlaT$TimeStamp <- as.POSIXct(BitexlaT$TimeStamp,origin = "1970-01-01")
 return(BitexlaT)
 }
 
-# -- Ticker Bitex.la DATA API --------------------------------------------------------- #
+# -- Ticker Bitex.la DATA API ------------------------------------------------------------------- #
 
 BitexlaTicker  <- function(TimeStamp)
 {
@@ -201,7 +201,7 @@ BitexlaTicker     <- data.frame(fromJSON(BitexlaTkGetQuery))
 return(BitexlaTicker)
 }
 
-# -- Transactions from Last 24 Hours Bitex.la DATA API -------------------------------- #
+# -- Transactions from Last 24 Hours Bitex.la DATA API ------------------------------------------ #
 
 Bitexla24HistTrades  <- function(TimeStamp)
 {
@@ -216,11 +216,11 @@ BitexlaT24$TimeStamp <- as.POSIXct(as.numeric(BitexlaT24$TimeStamp),
 return(BitexlaT24)
 }
 
-# -- ---------------------------------------------------------------------------------- #
-# -- BANX.io DATA API ----------------------------------------------------------------- #
-# -- ---------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+# -- BANX.io DATA API --------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
 
-# -- Markets Available BANX.io DATA API ----------------------------------------------- #
+# -- Markets Available BANX.io DATA API --------------------------------------------------------- #
 
 BanxioMarkets  <- function(TimeStamp)
 {
@@ -232,7 +232,7 @@ colnames(BANXioMkts) <- "Market"
 return(BANXioMkts)
 }
 
-# -- Markets V2 Available BANX.io DATA API -------------------------------------------- #
+# -- Markets V2 Available BANX.io DATA API ------------------------------------------------------ #
 
 BanxioMarketsV2  <- function(TimeStamp)
 {
@@ -243,7 +243,7 @@ BANXioMkts2   <- data.frame(fromJSON(BANXioQuery2G))
 return(BANXioMkts2)
 }
 
-# -- Order Book Available BANX.io DATA API -------------------------------------------- #
+# -- Order Book Available BANX.io DATA API ------------------------------------------------------ #
 
 BanxioOrderBook  <- function(MarketC,MarketP)
 {
@@ -258,7 +258,7 @@ BANXioOB <- fromJSON(BANXioQuery3G, simplifyDataFrame = TRUE)[1]$market$recenttr
 return(BANXioOB)
 }
 
-# -- Historical Trades Available BANX.io DATA API ------------------------------------- #
+# -- Historical Trades Available BANX.io DATA API ----------------------------------------------- #
 
 BanxioTrades  <- function(MarketC,MarketP,TradeSince)
 {
@@ -273,7 +273,7 @@ BANXioTrades  <- data.frame(fromJSON(BANXioQuery4G, simplifyDataFrame = TRUE)[1]
 return(BANXioTrades)
 }
 
-# -- Actual Price Available BANX.io DATA API ------------------------------------------ #
+# -- Actual Price Available BANX.io DATA API ---------------------------------------------------- #
 
 BanxioTicker  <- function(MarketC)
 {
@@ -285,11 +285,11 @@ BANXioTicker  <- fromJSON(BANXioQuery5G, simplifyDataFrame = TRUE)
 return(BANXioTicker)
 }
 
-# -- ---------------------------------------------------------------------------------- #
-# -- BaseBit DATA API ----------------------------------------------------------------- #
-# -- ---------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+# -- BaseBit DATA API --------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
 
-# -- Markets/Pairs Available BaseBit DATA API ----------------------------------------- #
+# -- Markets/Pairs Available BaseBit DATA API --------------------------------------------------- #
 
 BaseBitPairs  <- function(TimeStamp)
 {
@@ -298,7 +298,7 @@ cainfo=system.file("CurlSSL","cacert.pem",package="RCurl")), simplifyDataFrame =
 return(BaseBitInstruments)
 }
 
-# -- Actual Ticker BaseBit DATA API --------------------------------------------------- #
+# -- Actual Ticker BaseBit DATA API ------------------------------------------------------------- #
 
 BaseBitTicker <- function(TimeStamp)
 {
@@ -308,7 +308,7 @@ BaseBitTicker <- do.call(rbind.data.frame, BaseBitTicker)
 return(BaseBitTicker)
 }
 
-# -- Order Book BaseBit DATA API ------------------------------------------------------ #
+# -- Order Book BaseBit DATA API ---------------------------------------------------------------- #
 
 BaseBitOrderBook <- function(TimeStamp)
 {
@@ -332,7 +332,7 @@ BaseBitOB <- data.frame(TimeStamp,BaseBitOB[,])
 return(BaseBitOB)
 }
 
-# -- Trades BaseBit DATA API ---------------------------------------------------------- #
+# -- Trades BaseBit DATA API -------------------------------------------------------------------- #
 
 BaseBitTrades <- function(TimeStamp)
 {
@@ -344,11 +344,11 @@ colnames(BaseBitTrades) <- c("TimeStamp","Side","Price","Amount")
 return(BaseBitTrades)
 }
 
-# -- ---------------------------------------------------------------------------------- #
-# -- 1btcxe public API ---------------------------------------------------------------- #
-# -- ---------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+# -- 1btcxe public API -------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
 
-# -- 1btcxe Transactions public API --------------------------------------------------- #
+# -- 1btcxe Transactions public API ------------------------------------------------------------- #
 
 btcxeTrades <- function(TimeStamp)
 {
@@ -360,7 +360,7 @@ colnames(btcxeTransactions) <- c("ID","TimeStamp","Amount","Price","PositionValu
 return(btcxeTransactions)
 }
 
-# -- 1btcxe Stats public API ---------------------------------------------------------- #
+# -- 1btcxe Stats public API -------------------------------------------------------------------- #
 
 btcxeStats <- function(TimeStamp)
 {
@@ -373,7 +373,7 @@ colnames(btcxeStats)  <- c("Info","Value")
 return(btcxeStats)
 }
 
-# -- 1btcxe Historical Prices public API ---------------------------------------------- #
+# -- 1btcxe Historical Prices public API -------------------------------------------------------- #
 
 btcxeHistoricPrices <- function(TimeStamp)
 {
@@ -385,7 +385,7 @@ colnames(btcxeHistoricPrices)  <- c("TimeStamp","Price")
 return(btcxeHistoricPrices)
 }
 
-# -- 1btcxe OrderBook public API ------------------------------------------------------ #
+# -- 1btcxe OrderBook public API ---------------------------------------------------------------- #
 
 btcxeOrderBook <- function(TimeStamp)
 {
@@ -410,11 +410,11 @@ btcxeOrderBook <- data.frame(btcxeOrderBook[,])
 return(btcxeOrderBook)
 }
 
-# -- ---------------------------------------------------------------------------------- #
-# -- Bitso Public API ----------------------------------------------------------------- #
-# -- ---------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+# -- Bitso Public API --------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
 
-# -- Bitso OrderBook Public API ------------------------------------------------------- #
+# -- Bitso OrderBook Public API ----------------------------------------------------------------- #
 
 BitsoOrderBook <- function(TimeStamp)
 {
@@ -441,7 +441,7 @@ BitsoOrderBookQuery <- data.frame(BitsoOrderBookQuery[,])
 return(BitsoOrderBookQuery)
 }
 
-# -- Bitso Trades Public API ---------------------------------------------------------- #
+# -- Bitso Trades Public API -------------------------------------------------------------------- #
 
 BitsoTrades <- function(TimeStamp)
 {
@@ -456,11 +456,11 @@ BitsoTradesQ$Amount    <- as.numeric(paste(BitsoTradesQ$Amount))
 return(BitsoTradesQ)
 }
 
-# -- ---------------------------------------------------------------------------------- #
-# -- FoxBit --------------------------------------------------------------------------- #
-# -- ---------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+# -- FoxBit ------------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
 
-# -- FoxBit Trades Public API --------------------------------------------------------- #
+# -- FoxBit Trades Public API ------------------------------------------------------------------- #
 
 FoxBitTrades <- function(TimeStamp)
 {
@@ -471,7 +471,7 @@ FoxBitTradesQ$TimeStamp <- as.POSIXct(FoxBitTradesQ$TimeStamp,origin = "1970-01-
 return(FoxBitTradesQ)
 }
 
-# -- FoxBit Order Book Public API ----------------------------------------------------- #
+# -- FoxBit Order Book Public API --------------------------------------------------------------- #
 
 FoxBitOrderBook <- function(TimeStamp)
 {
