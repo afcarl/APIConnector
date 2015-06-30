@@ -4,6 +4,74 @@
 # -- ----------------------------------------------------------------------------------- #
 
 # -- ---------------------------------------------------------------------------------- #
+# -- OANDA REST API, Indices, Commodities, Bonds Yields ------------------------------- #
+# -- ---------------------------------------------------------------------------------- #
+
+EconomicCalendar <- function(Instrument,Period)
+{
+  auth  <- c(Authorization = paste("Bearer",
+  "939b7f322b14828aed5fe3088d091fec-34ee9ab87e1a241ae65cf3e157a5aabf",sep=" "))
+  auth1 <- paste("Authorization:",auth,sep=" ")
+  
+  Queryhttp  <- paste("https://api-fxpractice.oanda.com",
+  "/labs/v1/calendar?instrument=",sep="")
+  Queryhttp1 <- paste(Queryhttp,Instrument,sep="")  
+  Queryhttp2 <- paste(Queryhttp1,"period=",sep="&")  
+  Queryhttp3 <- paste(Queryhttp2,Period,sep="")
+  
+  CalenH <- getURL(Queryhttp3,cainfo=system.file("CurlSSL",
+  "cacert.pem",package="RCurl"),httpheader=auth)
+  Calend <- fromJSON(CalenH, simplifyDataFrame = TRUE)
+  Calend <- Calend[complete.cases(Calend[,]),]
+  Calend$timestamp <- as.POSIXct(Calend$timestamp,origin = "1970-01-01")
+  return(Calend)
+}
+
+ActualPrice <- function(Instrument)
+{
+  auth      <- c(Authorization = paste("Bearer",
+  "939b7f322b14828aed5fe3088d091fec-34ee9ab87e1a241ae65cf3e157a5aabf",sep=" "))
+  Queryhttp <- paste("https://api-fxpractice.oanda.com",
+  "/v1/prices?instruments=",sep="")
+  QueryPrec <- paste(Queryhttp,Instrument,sep="")
+  InstPrec  <- getURL(QueryPrec,cainfo=system.file("CurlSSL","cacert.pem",
+  package="RCurl"),httpheader=auth)
+  InstPrecjson <- fromJSON(InstPrec, simplifyDataFrame = TRUE)
+  DateTime     <- as.POSIXct(substr(InstPrecjson[[1]]$time,12,19),format = "%H:%M:%S")
+  Date <- as.character(substr(DateTime,1,10))
+  Time <- as.character(substr(DateTime,12,19))
+  DataJSON  <- data.frame(Date,Time,InstPrecjson[[1]]$bid,InstPrecjson[[1]]$ask)
+  colnames(DataJSON) <- c("Date","Time","Bid","Ask")
+  return(DataJSON)
+}
+
+HisPrices  <- function(Granularity,Instrument,Count)
+{
+  qcount  <- paste("count=",Count,sep="")
+  qcandleFormat <- "candleFormat=midpoint"
+  qgranularity  <- paste("granularity=",Granularity,sep="")
+  qdailyalignment    <- paste("dailyAlignment=",21,sep="")
+  qalignmentTimezone <- paste("alignmentTimezone=","America%2FMexico_City",sep="")
+  
+  auth           <- c(Authorization = paste("Bearer",
+  "939b7f322b14828aed5fe3088d091fec-34ee9ab87e1a241ae65cf3e157a5aabf",sep=" "))
+  QueryHistPrec  <- paste("https://api-fxpractice.oanda.com",
+  "/v1/candles?instrument=",sep="")
+  QueryHistPrec1 <- paste(QueryHistPrec,Instrument,sep="")
+  QueryHistPrec2 <- paste(QueryHistPrec1,qcount,qcandleFormat,qgranularity,
+  qdailyalignment,qalignmentTimezone,sep="&")
+  InstHistP <- getURL(QueryHistPrec2,cainfo=system.file("CurlSSL","cacert.pem",
+  package="RCurl"),httpheader=auth)
+  InstHistPjson <- fromJSON(InstHistP, simplifyDataFrame = TRUE)
+  Prices        <- data.frame(InstHistPjson[[3]])
+  Prices$Times  <- substr(Prices$time,12,19)
+  Prices$Dates  <- substr(Prices$time,1,10)
+  Prices <- cbind(Prices$Dates,Prices$Times,Prices[,2:7])
+  colnames(Prices) <- c("Date","Time","Open","High","Low","Close","TickVolume","Complete")
+  return(Prices)
+}
+
+# -- ---------------------------------------------------------------------------------- #
 # -- Quantmod - Yahoo FX and Stocks --------------------------------------------------- #
 # -- ---------------------------------------------------------------------------------- #
 
