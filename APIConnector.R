@@ -190,6 +190,8 @@ BitexlaT$TimeStamp <- as.POSIXct(BitexlaT$TimeStamp,origin = "1970-01-01")
 return(BitexlaT)
 }
 
+BitexlaTrades()
+
 # -- Ticker Bitex.la DATA API ------------------------------------------------------------------- #
 
 BitexlaTicker  <- function(TimeStamp)
@@ -209,7 +211,7 @@ BitexlaT24Query    <- "https://bitex.la/api-v1/rest/btc/market/last_24_hours"
 BitexlaT24GetQuery <- getURL(BitexlaT24Query,cainfo=system.file("CurlSSL",
                       "cacert.pem",package="RCurl"))
 BitexlaT24 <- data.frame(fromJSON(BitexlaT24GetQuery))
-colnames(BitexlaT24) <- c("TimeStamp","Low","Open","Close","High","Volume",
+colnames(BitexlaT24) <- c("TimeStamp","Low","Open","Close","High","Amount",
                         "Last","Volume-Weigh")
 BitexlaT24$TimeStamp <- as.POSIXct(as.numeric(BitexlaT24$TimeStamp),
                         origin = "1970-01-01")
