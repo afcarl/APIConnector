@@ -98,61 +98,8 @@ return(StockData1)
 # -- meXBT DATA API ----------------------------------------------------------------------------- #
 # -- -------------------------------------------------------------------------------------------- #
 
-# -- Get Tick Historical Prices ----------------------------------------------------------------- #
-
-meXBTHistoricPrices <- function(BtcPair,TimeZonePar,InfoSince)
-{
-HmeXBTBtcUsd1a <- paste("https://data.mexbt.com/trades/",BtcPair,sep="")
-HmeXBTBtcUsd1b <- paste(HmeXBTBtcUsd1a,"?since=",sep="")
-HmeXBTBtcUsd1c <- paste(HmeXBTBtcUsd1b,InfoSince,sep="")
-HmeXBTBtcUsd2  <- getURL(HmeXBTBtcUsd1c,cainfo=system.file("CurlSSL",
-                 "cacert.pem",package="RCurl"))
-HmeXBTBtcUsd3 <- data.frame(fromJSON(HmeXBTBtcUsd2))
-
-BtcUsd <- data.frame(HmeXBTBtcUsd3$tid,
-as.POSIXct(as.numeric(as.character(HmeXBTBtcUsd3$date)),
-origin = '1970-01-01', tz='America/Mexico_City'),
-HmeXBTBtcUsd3$price, HmeXBTBtcUsd3$amount)
-colnames(BtcUsd) <- c("TickerID","TimeStamp","Price","Amount")
-return(BtcUsd)
-}
-
-# -- Get Present Ticker ------------------------------------------------------------------------- #
-
-meXBTTicker <- function(BtcPair)
-{
-meXBTQuery1  <- paste("https://data.mexbt.com/ticker/",BtcPair,sep="")
-meXBTQuery1G <- getURL(meXBTQuery1,cainfo=system.file("CurlSSL",
-                "cacert.pem",package="RCurl"))
-TickermeXBT  <- data.frame(fromJSON(meXBTQuery1G))
-TickermeXBT  <- data.frame(Sys.time(),TickermeXBT$last,TickermeXBT$bid,TickermeXBT$ask,
-                TickermeXBT$askCount, TickermeXBT$bidCount)
-colnames(TickermeXBT) <- c("Date","Value","Bid","Ask","AskCount","BidCount")
-return(TickermeXBT)
-}
-
-# -- Get Present Order Book --------------------------------------------------------------------- #
-
-meXBTOrderBook <- function(BtcPair)
-{
-meXBTts <- Sys.time()
-meXBTOBQuery  <- paste("https://data.mexbt.com/order-book/",BtcPair,sep="")
-meXBTOBQuery1 <- getURL(meXBTOBQuery,cainfo=system.file("CurlSSL",
-                 "cacert.pem",package="RCurl"))
-meXBTOBBids <- data.frame(fromJSON(meXBTOBQuery1)[1])
-meXBTOBBids$Side <- "Long(Bid)"
-meXBTOBBids <- meXBTOBBids[-length(meXBTOBBids[,1]),]
-colnames(meXBTOBBids) <- c("Price","Amount","Side")
-
-meXBTOBAsks <- data.frame(fromJSON(meXBTOBQuery1)[2])
-meXBTOBAsks$Side <- "Short(Ask)"
-colnames(meXBTOBAsks) <- c("Price","Amount","Side")
-meXBTBtcUsdOB <- rbind(meXBTOBBids,meXBTOBAsks)
-
-meXBTBtcUsdOB <- data.frame(meXBTts,meXBTBtcUsdOB[,])
-colnames(meXBTBtcUsdOB) <- c("TimeStamp","Price","Amount","Side")
-return(meXBTBtcUsdOB)
-}
+meXBTAPI <- "https://raw.githubusercontent.com/FranciscoME/mexbt-data-r/clean-master/meXBTRClient.R"
+downloader::source_url(meXBTAPI,prompt=FALSE,quiet=TRUE)
 
 # -- -------------------------------------------------------------------------------------------- #
 # -- Bitex.la DATA API -------------------------------------------------------------------------- #
@@ -492,3 +439,45 @@ FoxBitOBAsks <- FoxBitOBAsks[order(-as.numeric(FoxBitOBAsks$Price)), , drop = FA
 FoxBitOrderBookQuery   <- rbind(FoxBitOBAsks,FoxBitOBBids)
 return(FoxBitOrderBookQuery)
 }
+
+OHLC <- function(Data,TimeInterval)
+{
+xtsBtcPrice  <- xts(BtcPrice$Price, order.by = BtcPrice$TimeStamp)
+xtsBtcAmount <- xts(BtcAmount$Amount, order.by = BtcAmount$TimeStamp)
+xtsBtcPrice  <- to.period(xtsBtcPrice, period = TimeInterval,k=1, indexAt="startof")
+xtsBtcAmount <- to.period(xtsBtcAmount, period = TimeInterval,k=1, indexAt="startof")
+Final <- cbind(xtsBtcPrice,xtsBtcAmount)
+Final <- fortify.zoo(Final)
+colnames(Final) <- c("TimeStamp","Open(Price)","High(Price)","Low(Price)","Close(Price)",
+"Open(Volume)","High(Volume)","Low(Volume)","Close(Volume)")
+return(Final)
+}
+
+# -- -------------------------------------------------------------------------------------------- #
+# -- OKCoin ------------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+
+#OKCoinTicker   <- "https://www.okcoin.com/api/ticker.do?ok=1"
+#OkCoinLCTicker <- "https://www.okcoin.com/api/ticker.do?symbol=ltc_usd&ok=1"
+#OkCoinOB     <- "https://www.okcoin.com/api/depth.do?ok=1"
+#OkCoinLCOB   <- "https://www.okcoin.com/api/depth.do?symbol=ltc_usd&ok=1"
+#OkCoinTrades <- "https://www.okcoin.com/api/trades.do?since=5000&ok=1"
+#OkCoinLCTrades <- "https://www.okcoin.com/api/trades.do?symbol=ltc_usd&since=5000&ok=1"
+#OKCoinFutureTicker <- "https://www.okcoin.com/api/future_ticker.do"
+#symbol=c("btc_usd","ltc_usd") , contractType= c("this_week","next_week","month","quarter")
+#OKCoinFutureOB <- "https://www.okcoin.com/api/future_depth.do"
+#OKCoinFutureTrades <- "https://www.okcoin.com/api/future_trades.do"
+#OKCoinFutureIndex <- "https://www.okcoin.com/api/future_getIndex.do"
+
+# -- -------------------------------------------------------------------------------------------- #
+# -- Bitfinex ----------------------------------------------------------------------------------- #
+# -- -------------------------------------------------------------------------------------------- #
+
+#BitFinexTicker <- "https://api.bitfinex.com/v1/pubticker/btcusd"
+#BitFinexStats  <- "https://api.bitfinex.com/v1/stats/btcusd"
+#BitFinexTrades <- "https://api.bitfinex.com/v1/trades/btcusd"
+#BitFinexLends  <- "https://api.bitfinex.com/v1/lends/btc"
+#BitFinexSym    <- "https://api.bitfinex.com/v1/symbols"
+#BitFinexSymD   <- "https://api.bitfinex.com/v1/symbols_details"
+#BitFinexLendBook  <- "https://api.bitfinex.com/v1/lendbook/btc"
+#BitFinexOrderBook <- "https://api.bitfinex.com/v1/book/btcusd"
