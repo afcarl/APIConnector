@@ -85,6 +85,7 @@ colnames(FxData) <- c("TimeStamp","Price")
 return(FxData)
 }
 
+
 OYStockD1 <- function(Symbol,APISource,InitDate,FinDate)
 {
 StockData1 <- data.frame(get(getSymbols(Symbol,src=APISource,from=InitDate,to=FinDate)))
@@ -136,8 +137,6 @@ colnames(BitexlaT) <- c("TimeStamp","TransactionID","PricePaid","AmountSold")
 BitexlaT$TimeStamp <- as.POSIXct(BitexlaT$TimeStamp,origin = "1970-01-01")
 return(BitexlaT)
 }
-
-BitexlaTrades()
 
 # -- Ticker Bitex.la DATA API ------------------------------------------------------------------- #
 
@@ -438,19 +437,6 @@ colnames(FoxBitOBAsks) <- c("TimeStamp","Price","AmountBTC","AmountBRL","Side")
 FoxBitOBAsks <- FoxBitOBAsks[order(-as.numeric(FoxBitOBAsks$Price)), , drop = FALSE]
 FoxBitOrderBookQuery   <- rbind(FoxBitOBAsks,FoxBitOBBids)
 return(FoxBitOrderBookQuery)
-}
-
-OHLC <- function(Data,TimeInterval)
-{
-xtsBtcPrice  <- xts(BtcPrice$Price, order.by = BtcPrice$TimeStamp)
-xtsBtcAmount <- xts(BtcAmount$Amount, order.by = BtcAmount$TimeStamp)
-xtsBtcPrice  <- to.period(xtsBtcPrice, period = TimeInterval,k=1, indexAt="startof")
-xtsBtcAmount <- to.period(xtsBtcAmount, period = TimeInterval,k=1, indexAt="startof")
-Final <- cbind(xtsBtcPrice,xtsBtcAmount)
-Final <- fortify.zoo(Final)
-colnames(Final) <- c("TimeStamp","Open(Price)","High(Price)","Low(Price)","Close(Price)",
-"Open(Volume)","High(Volume)","Low(Volume)","Close(Volume)")
-return(Final)
 }
 
 # -- -------------------------------------------------------------------------------------------- #
