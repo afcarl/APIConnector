@@ -1,13 +1,22 @@
 # -- -------------------------------------------------------------------------------------------- #
-# -- meXBT API CONNECTOR ------------------------------------------------------------------------ #
+# -- meXBT Various API CONNECTOR ---------------------------------------------------------------- #
 # -- License: PRIVATE and Right Reserved -------------------------------------------------------- #
 # -- -------------------------------------------------------------------------------------------- #
+
+Pkg <- c("base","digest","downloader","fBasics","forecast","grid","gridExtra","jsonlite",
+"lubridate","plyr","quantmod","Quandl","reshape2","RCurl","stats",
+"scales","tseries","TTR","TSA","xts","xts","zoo")
+
+inst <- Pkg %in% installed.packages()
+if(length(Pkg[!inst]) > 0) install.packages(Pkg[!inst])
+instpackages <- lapply(Pkg, library, character.only=TRUE)
+
+EconomicCalendar <- function(Instrument,Period)
 
 # -- -------------------------------------------------------------------------------------------- #
 # -- OANDA REST API, Indices, Commodities, Bonds Yields ----------------------------------------- #
 # -- -------------------------------------------------------------------------------------------- #
 
-EconomicCalendar <- function(Instrument,Period)
 {
   auth  <- c(Authorization = paste("Bearer",
   "939b7f322b14828aed5fe3088d091fec-34ee9ab87e1a241ae65cf3e157a5aabf",sep=" "))
